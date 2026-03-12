@@ -1,3 +1,47 @@
+# Vitality Behaviour Analysis
+
+Personal project analyzing exported Strava fitness activities to estimate **Discovery Vitality Active Rewards** points and predict weekly goal achievement (900 points standard).
+
+## Main Notebook: vitality_analysis.ipynb
+
+This Jupyter Notebook contains the core workflow:
+
+- **Data Loading** — Reads mixed Strava export formats:
+  - .gpx files (tracks, distance, duration)
+  - .fit / .fit.gz / .fit.zip files (adds heart rate, cadence, speed for points estimation)
+
+- **Data Preparation** — Cleans timestamps, calculates duration/distance, adds weekday/week columns
+
+- **Vitality Points Estimation** — Uses heart rate zones (based on official Discovery rules as of 2026):
+  - Light (60–69% max HR): 100–300 pts depending on duration
+  - Moderate (70–79%): 100–300 pts
+  - Vigorous (80%+): 300 pts for 30+ min
+  - Only highest points per day count (partial implementation)
+
+- **Visual Insights**:
+  - Workout frequency & average duration by day of week
+  - Weekly total duration trends (2014–2026)
+  - Estimated points trends (FIT data only)
+
+- **Early-Week Prediction** — Simple logistic regression to estimate chance of hitting 900 pts based on Wednesday progress
+
+## How to Run
+
+1. Clone or download this repo
+2. Install dependencies: `pip install pandas numpy matplotlib seaborn fitparse gpxpy`
+3. Update the `folder` path in the notebook to point to your Strava activities export
+4. Run cells sequentially
+
+## Limitations & Notes
+
+- GPX activities contribute to duration/distance but not points (no HR data)
+- Points are estimates — actual Vitality awarding may differ slightly
+- Focused on HR-based rules; does not include sleep/steps/other bonuses
+
+See the notebook for full details, code, and plots.
+
+Feedback welcome!
+
 Limitations & Assumptions
 
 HR-based points estimation assumes accurate heart rate data from FIT files; GPX activities (no HR) contribute 0 points in this model.
@@ -6,24 +50,6 @@ Max HR is estimated as 220 - age — replace with your actual tested max HR for 
 Non-HR activities (e.g., steps-only, swimming without HR monitor) are not awarded points here.
 Model does not yet account for other point sources (sleep, nutrition, weekly challenges, etc.).
 
-Key Insights
-
-High-effort workouts (≥200 estimated points) frequently feature structured training terms such as interval, tempo, hill, repeats, and VO2 — suggesting that deliberate, intensity-focused sessions drive the most Vitality points.
-Mid-week consistency (strong points by Wednesday) is a strong predictor of weekly goal achievement in historical data.
-Longer-term trends may reveal shifts in training volume/intensity across life stages (e.g., post-graduation, career changes, or family phases).
-
-Business Value
-This project demonstrates how personal fitness data can power predictive analytics to estimate the probability of reaching the 900-point weekly Vitality Active Rewards goal based on Wednesday progress.
-Early-week forecasting enables proactive interventions — such as mid-week motivational nudges, personalized alerts, or gamified reminders — which can improve adherence, reinforce healthy behavior change, and increase long-term member engagement and retention for Discovery.
-By transforming raw Strava exports into actionable, behavior-motivating insights, the model aligns directly with Discovery’s core purpose: helping people live healthier, longer lives through data-driven wellness.
-Future Work & Extensions
-
-Implement daily max points grouping to fully match Vitality’s “highest activity per day” rule
-Add time-series forecasting (e.g., Prophet, ARIMA, or LSTM) to predict end-of-week points trajectory
-Incorporate NLP analysis on activity titles/descriptions/notes (word clouds → topic modeling → sentiment)
-Explore LLM integration for natural-language summaries of weekly performance (e.g., via local Llama-3 or Ollama)
-Deploy as an interactive Streamlit / Dash dashboard showing personal trends, goal probability, and motivational feedback
-Extend to SQL-based reporting (e.g., load cleaned DataFrame into SQLite/PostgreSQL for BI-style queries: SELECT week, AVG(estimated_points), SUM(duration_min) FROM activities GROUP BY week)
 
 Technical Note – SQL Context
 In my day-to-day work, I regularly build and maintain SQL reports for data extraction, aggregation, and business intelligence.
@@ -37,7 +63,9 @@ FROM activities
 GROUP BY week
 ORDER BY week DESC;
 Hypothetical LLM Prompt Example
-(Demonstrates awareness of modern NLP/LLM capabilities)
+
+
+
 Pythonprint("""
 Hypothetical LLM Prompt (e.g., for a local model such as Llama-3 via Ollama or Hugging Face):
 
