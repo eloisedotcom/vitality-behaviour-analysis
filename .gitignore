@@ -1,0 +1,12 @@
+# ---------- Data (DO NOT COMMIT PERSONAL FILES) ----------
+data/activities/
+data/processed/
+
+# ---------- Python ----------
+__pycache__/
+*.pyc
+.venv/
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
