@@ -42,7 +42,7 @@ HR-based points estimation assumes accurate heart rate data from FIT files; GPX 
 
 Technical Note – SQL Context In my day-to-day work, I regularly build and maintain SQL reports for data extraction, aggregation, and business intelligence. This project uses pandas for flexible prototyping and data wrangling, but the cleaned DataFrame can be loaded into a relational database (SQLite or PostgreSQL) for more structured querying, e.g.: SQLSELECT week, AVG(estimated_points) AS avg_points, SUM(duration_min) AS total_duration_min, COUNT(*) AS num_activities FROM activities GROUP BY week ORDER BY week DESC; Hypothetical LLM Prompt Example
 
-Pythonprint(""" Hypothetical LLM Prompt (e.g., for a local model such as Llama-3 via Ollama or Hugging Face):
+Pythonprint(""" Hypothetical LLM Prompt (e.g., for a local model such as Llama-3 via Ollama):
 
 You are a supportive Discovery Vitality coach analyzing a member's weekly fitness data.
 
@@ -57,6 +57,6 @@ Generate a concise, motivational 3–5 sentence summary that:
 Celebrates achievements
 Highlights patterns
 Offers one actionable suggestion to maintain or improve momentum
-Example: Total points: 1050 Points by Wednesday: 420 Average HR: 78.5% Key activities: Interval Run, Hill Cycling, Tempo Swim
+Example: Total points: 1050 Points by Wednesday: 400 Average HR: 78.5% Key activities: Interval Run, Hill Cycling, Tempo Swim
 
-Sample output: This week you smashed the 900-point goal with 1050 points — outstanding work! Your powerful mid-week surge (420 points by Wednesday) driven by high-intensity interval runs, hill efforts, and tempo sessions shows excellent consistency in vigorous zones. Keep front-loading structured workouts early in the week to make hitting the Active Rewards target feel effortless and sustainable. """)
+Sample output: This week you smashed the 900-point goal with 1050 points — outstanding work! Your powerful mid-week surge (400 points by Wednesday) driven by high-intensity interval runs, hill efforts, and tempo sessions shows excellent consistency in vigorous zones. Keep front-loading structured workouts early in the week to make hitting the Active Rewards target feel effortless and sustainable. """)
